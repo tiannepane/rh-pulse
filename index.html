@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ratehub Pulse Portal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #000;
+      min-height: 100vh;
+    }
+
+    .mainnav {
+      background: #fff;
+      border-bottom: 1px solid #e8e8e8;
+      padding: 0 48px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-brand { font-size: 20px; font-weight: 700; color: #000; text-decoration: none; letter-spacing: -0.3px; }
+    .nav-right { display: flex; align-items: center; gap: 36px; }
+    .nav-link {
+      background: none; border: none; cursor: pointer;
+      font-family: inherit; font-size: 15px; font-weight: 400;
+      color: #000; padding: 0; text-decoration: none; white-space: nowrap;
+    }
+    .nav-link:hover { opacity: 0.7; }
+    .nav-pill {
+      background: #FCD34D; color: #000; font-size: 12px; font-weight: 600;
+      border-radius: 6px; padding: 4px 12px; white-space: nowrap; margin-left: 8px;
+    }
+
+    .page-wrapper { max-width: 1200px; margin: 0 auto; padding: 40px 48px 72px; }
+    .screen { display: none; }
+    .screen.active { display: block; }
+    .page-header { margin-bottom: 0; }
+    .page-title { font-size: 32px; font-weight: 700; color: #000; letter-spacing: -0.5px; margin-bottom: 6px; }
+    .page-subtitle { font-size: 15px; color: #000; font-weight: 400; margin-bottom: 40px; }
+
+    .rh-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 28px 32px; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      border-radius: 6px; padding: 10px 20px; font-size: 14px; font-family: inherit;
+      font-weight: 500; cursor: pointer; text-decoration: none;
+      transition: opacity 0.15s, background 0.15s; border: none;
+    }
+    .btn-teal { background: #0077B6; color: #fff; }
+    .btn-teal:hover { opacity: 0.88; }
+    .btn-outline-teal { background: #fff; border: 1.5px solid #0077B6; color: #0077B6; }
+    .btn-outline-teal:hover { background: #EFF6FF; }
+    .btn-full { width: 100%; }
+
+    .section-label {
+      font-size: 11px; color: #000; text-transform: uppercase;
+      letter-spacing: 0.5px; font-weight: 500; margin-bottom: 16px;
+    }
+
+    /* ── Stat grid (Agent Health + Sent Log) ── */
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+    .stat-card { background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 24px 28px; }
+    .stat-card-label { text-transform: uppercase; font-size: 11px; font-weight: 600; color: #0077B6; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .stat-card-number { font-size: 36px; font-weight: 700; color: #000; line-height: 1; margin-bottom: 8px; }
+    .stat-card-context { font-size: 13px; color: #000; font-weight: 400; line-height: 1.5; }
+
+    /* ── SCREEN 1 — AGENT HEALTH ── */
+    @keyframes dotPulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    /* Grid */
+    .ah-grid { display: flex; flex-direction: column; gap: 16px; }
+    .ah-row2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
+
+    /* Shared status pill */
+    .ah-pill { display: inline-flex; align-items: center; gap: 6px; background: #F0FDF4; color: #16A34A; font-size: 12px; font-weight: 600; border-radius: 20px; padding: 4px 12px; white-space: nowrap; }
+    .ah-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #16A34A; flex-shrink: 0; animation: dotPulse 2s ease-in-out infinite; }
+    .ah-seg { flex: 1; height: 100%; border-radius: 2px; }
+
+    /* Agent 1 — full width card */
+    .a1-card { background: #FFFFFF; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04); padding: 28px 32px; display: flex; gap: 48px; }
+    .a1-left { flex: 1; min-width: 0; }
+    .a1-num { font-size: 11px; font-weight: 600; color: #0077B6; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 6px; }
+    .a1-name { font-size: 20px; font-weight: 700; color: #000; margin-bottom: 4px; }
+    .a1-desc { font-size: 13px; color: #000; margin-bottom: 20px; line-height: 1.5; }
+    .a1-divider { border: none; border-top: 1px solid #F0F0F0; margin-bottom: 16px; }
+    .a1-meta-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 0; border-bottom: 1px solid #F5F5F5; }
+    .a1-meta-row:last-child { border-bottom: none; }
+    .a1-meta-label { font-size: 13px; color: #000; font-weight: 400; }
+    .a1-meta-value { font-size: 13px; color: #000; font-weight: 600; }
+    .a1-uptime { margin-top: 16px; }
+    .a1-uptime-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .a1-uptime-label { font-size: 11px; color: #000; font-weight: 400; }
+    .a1-uptime-pct { font-size: 11px; color: #000; font-weight: 600; }
+    .a1-bar { display: flex; gap: 2px; height: 12px; width: 100%; }
+    .a1-vlog { display: inline-block; margin-top: 16px; font-size: 13px; color: #0077B6; font-weight: 500; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; text-decoration: none; }
+    .a1-vlog:hover { text-decoration: underline; }
+
+    /* Agent 1 right column */
+    .a1-right { width: 280px; flex-shrink: 0; border-left: 1px solid #F0F0F0; padding-left: 32px; }
+    .a1-pill-wrap { text-align: right; margin-bottom: 20px; }
+    .a1-src-label { font-size: 11px; font-weight: 600; color: #0077B6; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .a1-src-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F5F5F5; }
+    .a1-src-row:last-child { border-bottom: none; }
+    .a1-src-left { display: flex; align-items: center; gap: 8px; }
+    .a1-src-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .a1-src-name { font-size: 13px; color: #000; font-weight: 500; }
+    .a1-src-time { font-size: 11px; color: #000; white-space: nowrap; flex-shrink: 0; }
+
+    /* Agents 2, 3, 4 — small cards */
+    .ah-sm-card { background: #FFFFFF; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04); padding: 24px; display: flex; flex-direction: column; height: 100%; }
+    .ah-sm-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .ah-sm-num { font-size: 11px; font-weight: 600; color: #0077B6; letter-spacing: 0.8px; text-transform: uppercase; }
+    .ah-sm-name { font-size: 16px; font-weight: 700; color: #000; margin-bottom: 4px; }
+    .ah-sm-desc { font-size: 12px; color: #000; line-height: 1.5; margin-bottom: 16px; }
+    .ah-sm-divider { border: none; border-top: 1px solid #F0F0F0; margin-bottom: 0; }
+    .ah-sm-meta-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 0; border-bottom: 1px solid #F5F5F5; }
+    .ah-sm-meta-row:last-child { border-bottom: none; }
+    .ah-sm-meta-label { font-size: 12px; color: #000; font-weight: 400; }
+    .ah-sm-meta-value { font-size: 12px; color: #000; font-weight: 600; text-align: right; }
+    .ah-sm-uptime { margin-top: 16px; }
+    .ah-sm-uptime-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .ah-sm-uptime-label { font-size: 11px; color: #000; font-weight: 400; }
+    .ah-sm-uptime-pct { font-size: 11px; color: #000; font-weight: 600; }
+    .ah-sm-bar { display: flex; gap: 2px; height: 12px; width: 100%; }
+    .ah-sm-vlog { display: inline-block; margin-top: auto; padding-top: 12px; font-size: 12px; color: #0077B6; font-weight: 500; cursor: pointer; background: none; border: none; font-family: inherit; text-decoration: none; }
+    .ah-sm-vlog:hover { text-decoration: underline; }
+
+    .log-panel { display: none; background: #fff; border: 1px solid #e8e8e8; border-radius: 8px; padding: 16px; margin-top: 12px; }
+    .log-panel.open { display: block; }
+    .log-line { font-size: 12px; font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace; color: #000; line-height: 1.8; }
+
+    /* ── SCREEN 2 — EMAIL QUEUE ── */
+    #screen-email-queue .page-title { margin-bottom: 4px; }
+    #screen-email-queue .page-subtitle { margin-bottom: 4px; }
+    .queue-policy { font-size: 13px; color: #000; margin-bottom: 32px; }
+    .queue-wrap { border: 1px solid #E8E8E8; border-radius: 12px; overflow: hidden; padding: 0 24px; }
+    .queue-tbl { width: 100%; border-collapse: collapse; }
+    .queue-tbl thead tr { border-bottom: 1px solid #E8E8E8; }
+    .queue-tbl th { font-size: 11px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 0.5px; padding: 20px 16px 12px 0; text-align: left; white-space: nowrap; }
+    .queue-tbl th:last-child { text-align: right; padding-right: 0; }
+    .queue-tbl td { padding: 16px 16px 16px 0; vertical-align: middle; border-bottom: 1px solid #F0F0F0; }
+    .queue-tbl tbody tr:last-child td { border-bottom: none; }
+    .queue-tbl td:last-child { text-align: right; padding-right: 0; }
+    .qt-recipient { font-size: 14px; font-weight: 600; color: #000; white-space: nowrap; padding-right: 24px !important; }
+    .qt-subject { font-size: 13px; color: #000; font-weight: 400; font-style: italic; max-width: 320px; }
+    .qt-pill { display: inline-block; background: #EFF6FF; color: #0077B6; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+    .qt-expiry { font-size: 14px; font-weight: 700; white-space: nowrap; }
+    .qt-action { font-size: 13px; font-weight: 600; color: #0077B6; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; text-decoration: none; white-space: nowrap; }
+    .qt-action:hover { text-decoration: underline; }
+
+    /* ── SCREEN 3 — EMAIL PREVIEW ── */
+    .back-link { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: #0077B6; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; margin-bottom: 24px; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+    .preview-layout { display: flex; gap: 32px; align-items: flex-start; }
+    .preview-col-left { flex: 1.4; min-width: 0; }
+    .preview-col-right { flex: 1; min-width: 0; }
+
+    #screen-email-preview .section-label {
+      font-size: 12px; font-weight: 600; color: #0077B6;
+      text-transform: none; letter-spacing: 0.5px; margin-bottom: 16px;
+    }
+
+    .email-to { font-size: 13px; color: #000; }
+    .email-subject { font-size: 14px; font-weight: 600; color: #000; margin: 8px 0 16px; line-height: 1.4; }
+    .email-divider { border-bottom: 1px solid #e8e8e8; padding-bottom: 16px; margin-bottom: 20px; }
+    .email-body { font-size: 15px; color: #000; line-height: 1.8; white-space: pre-line; }
+    .email-cta { display: inline-block; margin-top: 20px; font-size: 13px; color: #0077B6; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; text-decoration: none; }
+    .email-cta:hover { text-decoration: underline; }
+
+    .agent-summary { display: flex; flex-direction: column; }
+    .agent-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 0; border-bottom: 1px solid #F0F0F0; }
+    .agent-row:last-child { border-bottom: none; }
+    .agent-row-label { font-size: 14px; color: #000; font-weight: 500; white-space: nowrap; }
+    .agent-row-value { font-size: 14px; color: #000; font-weight: 400; text-align: right; }
+
+    .expiry-warning { background: #F8F8F8; border: 1px solid #E8E8E8; border-radius: 8px; padding: 14px 18px; margin: 20px 0; font-size: 13px; color: #000; line-height: 1.5; }
+    .expiry-clock { color: #0077B6; }
+
+    .action-buttons { display: flex; flex-direction: column; }
+    .btn-approve { background: #0077B6; color: #fff; font-size: 15px; font-weight: 600; padding: 14px 20px; border-radius: 8px; width: 100%; margin-bottom: 10px; border: none; cursor: pointer; font-family: inherit; text-align: center; }
+    .btn-approve:hover { opacity: 0.88; }
+    .btn-request-edits { background: #fff; border: 1px solid #0077B6; color: #0077B6; font-size: 14px; font-weight: 500; padding: 12px 20px; border-radius: 8px; width: 100%; margin-bottom: 8px; cursor: pointer; font-family: inherit; text-align: center; }
+    .btn-request-edits:hover { background: #EFF6FF; }
+    .btn-reject-text { background: none; border: none; color: #DC2626; font-size: 13px; font-weight: 400; padding: 8px; width: 100%; cursor: pointer; font-family: inherit; text-align: center; }
+    .btn-reject-text:hover { text-decoration: underline; }
+
+    .action-disclaimer { font-size: 12px; color: #000; text-align: center; margin-top: 8px; line-height: 1.5; }
+    .success-check { font-size: 48px; color: #0077B6; line-height: 1; margin-bottom: 16px; }
+    .success-title { font-size: 14px; font-weight: 600; color: #000; margin-bottom: 6px; }
+    .success-time { font-size: 13px; color: #000; margin-bottom: 24px; }
+
+    /* ── SCREEN 4 — PARAMETERS ── */
+    .param-stack { display: flex; flex-direction: column; gap: 24px; }
+    .param-desc { font-size: 13px; color: #000; line-height: 1.5; margin-bottom: 20px; }
+    .mode-row { display: flex; gap: 12px; }
+    .mode-btn { flex: 1; border: 1.5px solid #e8e8e8; border-radius: 8px; padding: 16px 20px; background: #fff; cursor: pointer; text-align: left; font-family: inherit; transition: border-color 0.15s, background 0.15s; }
+    .mode-btn.selected { border: 2px solid #0077B6; background: #EFF6FF; }
+    .mode-btn-name { font-size: 14px; font-weight: 600; color: #000; }
+    .mode-btn-desc { font-size: 12px; color: #000; margin-top: 4px; line-height: 1.4; }
+
+    .seg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .seg-setting-label { font-size: 12px; color: #000; margin-bottom: 8px; }
+    .seg-select {
+      width: 100%; border: 1px solid #e8e8e8; border-radius: 6px;
+      padding: 10px 32px 10px 12px; font-size: 14px; font-family: inherit; color: #000;
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23888' d='M5 6L0 0h10z'/%3E%3C/svg%3E") no-repeat right 12px center;
+      -webkit-appearance: none; appearance: none; cursor: pointer;
+    }
+    .seg-select:focus { outline: none; border-color: #0077B6; }
+
+    .expiry-block { margin: 20px 0 12px; }
+    .expiry-block-title { font-size: 13px; font-weight: 500; color: #000; margin-bottom: 4px; }
+    .expiry-block-desc { font-size: 13px; color: #000; line-height: 1.5; }
+    .expiry-row { display: flex; gap: 12px; }
+    .expiry-btn { flex: 1; border: 1.5px solid #e8e8e8; border-radius: 8px; padding: 12px 16px; background: #fff; cursor: pointer; text-align: center; font-family: inherit; font-size: 14px; font-weight: 600; color: #000; transition: border-color 0.15s, background 0.15s; }
+    .expiry-btn.selected { border: 2px solid #0077B6; background: #EFF6FF; }
+    .save-row { display: flex; justify-content: flex-end; align-items: center; gap: 16px; margin-top: 24px; }
+    .save-confirm { font-size: 13px; color: #0077B6; opacity: 0; transition: opacity 0.25s ease; }
+    .save-confirm.visible { opacity: 1; }
+
+    /* ── SCREEN 5 — SENT LOG ── */
+    .log-table-wrap { background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; overflow: hidden; padding: 0 24px; }
+    .log-table { width: 100%; border-collapse: collapse; }
+    .log-table thead tr { border-bottom: 1px solid #E8E8E8; }
+    .log-table th { font-size: 11px; color: #000; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; padding: 20px 16px 12px 0; text-align: left; white-space: nowrap; }
+    .log-table th:last-child { text-align: right; padding-right: 0; }
+    .log-table td { padding: 16px 16px 16px 0; font-size: 14px; color: #000; border-bottom: 1px solid #F0F0F0; vertical-align: middle; }
+    .log-table td:last-child { text-align: right; padding-right: 0; }
+    .log-table tbody tr:last-child td { border-bottom: none; }
+    .lt-recipient { font-weight: 600; }
+    .lt-detail { font-weight: 400; }
+    .lt-pill-sent { display: inline-block; background: #F0FDF4; color: #16A34A; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+    .lt-pill-rejected { display: inline-block; background: #FEF2F2; color: #DC2626; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+  </style>
+</head>
+<body>
+
+  <nav class="mainnav">
+    <a class="nav-brand" href="#">ratehub.ca</a>
+    <div class="nav-right">
+      <button class="nav-link" data-screen="email-queue">Email Queue</button>
+      <button class="nav-link" data-screen="sent-log">Sent Log</button>
+      <button class="nav-link active" data-screen="agent-health">Agent Health</button>
+      <button class="nav-link" data-screen="parameters">Parameters</button>
+      <span class="nav-pill">Internal Portal</span>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <!-- SCREEN 1 — AGENT HEALTH -->
+    <div class="screen active" id="screen-agent-health">
+      <div class="page-header">
+        <div class="page-title">Agent Health</div>
+        <div class="page-subtitle">Live status of all 4 agents powering Ratehub Pulse</div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-card-label">Emails in queue</div>
+          <div class="stat-card-number">4</div>
+          <div class="stat-card-context">Pending approval</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Sent this month</div>
+          <div class="stat-card-number">847</div>
+          <div class="stat-card-context">Delivered to users</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Approval rate</div>
+          <div class="stat-card-number">94%</div>
+          <div class="stat-card-context">Passed QA + review</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Avg. approval time</div>
+          <div class="stat-card-number">3.2 hrs</div>
+          <div class="stat-card-context">From draft to send</div>
+        </div>
+      </div>
+
+      <div class="ah-grid">
+
+        <!-- Row 1: Agent 1 full width -->
+        <div class="a1-card">
+          <div class="a1-left">
+            <div class="a1-num">Agent 1</div>
+            <div class="a1-name">Market Monitor</div>
+            <div class="a1-desc">Monitors BoC announcements, bond yields, and rate movements</div>
+            <hr class="a1-divider" />
+            <div class="a1-meta-row"><span class="a1-meta-label">Last triggered</span><span class="a1-meta-value">Today at 11:39 AM</span></div>
+            <div class="a1-meta-row"><span class="a1-meta-label">Emails processed</span><span class="a1-meta-value">847 this month</span></div>
+            <div class="a1-meta-row"><span class="a1-meta-label">Last event</span><span class="a1-meta-value">BoC held at 2.25%, May 3, 2026</span></div>
+            <div class="a1-uptime">
+              <div class="a1-uptime-row">
+                <span class="a1-uptime-label">Uptime</span>
+                <span class="a1-uptime-pct">99.7%</span>
+              </div>
+              <div class="a1-bar" id="uptime-1"></div>
+            </div>
+            <button class="a1-vlog" onclick="toggleLog(this)">View Log →</button>
+            <div class="log-panel">
+              <div class="log-line">[11:39 AM] BoC rate decision detected — held at 2.25%</div>
+              <div class="log-line">[11:40 AM] Significance threshold met — triggering Agent 2</div>
+              <div class="log-line">[11:40 AM] 1 draft queued for human review</div>
+            </div>
+          </div>
+          <div class="a1-right">
+            <div class="a1-pill-wrap">
+              <span class="ah-pill"><span class="ah-dot"></span>Running</span>
+            </div>
+            <div class="a1-src-label">Sources being monitored</div>
+            <div class="a1-src-row">
+              <div class="a1-src-left"><span class="a1-src-dot" style="background:#16A34A"></span><span class="a1-src-name">Bank of Canada</span></div>
+              <span class="a1-src-time">Today, 11:39 AM</span>
+            </div>
+            <div class="a1-src-row">
+              <div class="a1-src-left"><span class="a1-src-dot" style="background:#16A34A"></span><span class="a1-src-name">Globe and Mail</span></div>
+              <span class="a1-src-time">Today, 11:38 AM</span>
+            </div>
+            <div class="a1-src-row">
+              <div class="a1-src-left"><span class="a1-src-dot" style="background:#16A34A"></span><span class="a1-src-name">Ratehub market data</span></div>
+              <span class="a1-src-time">Today, 11:39 AM</span>
+            </div>
+            <div class="a1-src-row">
+              <div class="a1-src-left"><span class="a1-src-dot" style="background:#EAB308"></span><span class="a1-src-name">Bloomberg Canada</span></div>
+              <span class="a1-src-time">Today, 10:51 AM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Agents 2, 3, 4 -->
+        <div class="ah-row2">
+
+          <div class="ah-sm-card">
+            <div class="ah-sm-top">
+              <span class="ah-sm-num">Agent 2</span>
+              <span class="ah-pill"><span class="ah-dot"></span>Running</span>
+            </div>
+            <div class="ah-sm-name">User Profile Intelligence</div>
+            <div class="ah-sm-desc">Pulls renewal date, mortgage data, and activity history per user</div>
+            <hr class="ah-sm-divider" />
+            <div class="ah-sm-meta-row"><span class="ah-sm-meta-label">Last triggered</span><span class="ah-sm-meta-value">Today at 11:40 AM</span></div>
+            <div class="ah-sm-meta-row"><span class="ah-sm-meta-label">Emails processed</span><span class="ah-sm-meta-value">847 this month</span></div>
+            <div class="ah-sm-meta-row"><span class="ah-sm-meta-label">Last event</span><span class="ah-sm-meta-value">Profiled Artem, Sep 3 renewal</span></div>
+            <div class="ah-sm-uptime">
+              <div class="ah-sm-uptime-row">
+                <span class="ah-sm-uptime-label">Uptime</span>
+                <span class="ah-sm-uptime-pct">99.8%</span>
+              </div>
+              <div class="ah-sm-bar" id="uptime-2"></div>
+            </div>
+            <button class="ah-sm-vlog" onclick="toggleLog(this)">View Log →</button>
+            <div class="log-panel">
+              <div class="log-line">[11:40 AM] Received market signal from Agent 1</div>
+              <div class="log-line">[11:40 AM] Matched 1 user in renewal window (60–180 days)</div>
+              <div class="log-line">[11:41 AM] Profile compiled — passing to Agent 3</div>
+            </div>
+          </div>
+
+          <div class="ah-sm-card">
+            <div class="ah-sm-top">
+              <span class="ah-sm-num">Agent 3</span>
+              <span class="ah-pill"><span class="ah-dot"></span>Running</span>
+            </div>
+            <div class="ah-sm-name">Content Generation</div>
+            <div class="ah-sm-desc">Drafts personalized email based on market signal and user profile</div>
+            <hr class="ah-sm-divider" />
+            <div class="ah-sm-meta-row"><span class="ah-sm-meta-label">Last triggered</span><span class="ah-sm-meta-value">Today at 11:41 AM</span></div>
+            <div class="ah-sm-meta-row"><span class="ah-sm-meta-label">Emails processed</span><span class="ah-sm-meta-value">847 this month</span></div>
+            <div class="ah-sm-meta-row"><span class="ah-sm-meta-label">Last event</span><span class="ah-sm-meta-value">Draft generated for BoC hold</span></div>
+            <div class="ah-sm-uptime">
+              <div class="ah-sm-uptime-row">
+                <span class="ah-sm-uptime-label">Uptime</span>
+                <span class="ah-sm-uptime-pct">99.9%</span>
+              </div>
+              <div class="ah-sm-bar" id="uptime-3"></div>
+            </div>
+            <button class="ah-sm-vlog" onclick="toggleLog(this)">View Log →</button>
+            <div class="log-panel">
+              <div class="log-line">[11:41 AM] Profile received from Agent 2</div>
+              <div class="log-line">[11:41 AM] Draft generated — tone: informational</div>
+              <div class="log-line">[11:42 AM] Passing to Agent 4 for QA review</div>
+            </div>
+          </div>
+
+          <div class="ah-sm-card">
+            <div class="ah-sm-top">
+              <span class="ah-sm-num">Agent 4</span>
+              <span class="ah-pill"><span class="ah-dot"></span>Running</span>
+            </div>
+            <div class="ah-sm-name">QA + Compliance</div>
+            <div class="ah-sm-desc">Reviews drafts for tone, accuracy, and compliance before human review</div>
+            <hr class="ah-sm-divider" />
+            <div class="ah-sm-meta-row"><span class="ah-sm-meta-label">Last triggered</span><span class="ah-sm-meta-value">Today at 11:42 AM</span></div>
+            <div class="ah-sm-meta-row"><span class="ah-sm-meta-label">Emails processed</span><span class="ah-sm-meta-value">847 this month</span></div>
+            <div class="ah-sm-meta-row"><span class="ah-sm-meta-label">Last event</span><span class="ah-sm-meta-value">Passed QA, queued for approval</span></div>
+            <div class="ah-sm-uptime">
+              <div class="ah-sm-uptime-row">
+                <span class="ah-sm-uptime-label">Uptime</span>
+                <span class="ah-sm-uptime-pct">99.8%</span>
+              </div>
+              <div class="ah-sm-bar" id="uptime-4"></div>
+            </div>
+            <button class="ah-sm-vlog" onclick="toggleLog(this)">View Log →</button>
+            <div class="log-panel">
+              <div class="log-line">[11:42 AM] Draft received from Agent 3</div>
+              <div class="log-line">[11:42 AM] Compliance check passed — no regulated claims</div>
+              <div class="log-line">[11:42 AM] Tone check passed — informational</div>
+              <div class="log-line">[11:43 AM] Email queued for human approval</div>
+            </div>
+          </div>
+
+        </div><!-- /ah-row2 -->
+
+      </div><!-- /ah-grid -->
+
+    </div>
+
+
+    <!-- SCREEN 2 — EMAIL QUEUE -->
+    <div class="screen" id="screen-email-queue">
+      <div class="page-header">
+        <div class="page-title">Email Queue</div>
+        <div class="page-subtitle">4 emails pending human approval</div>
+        <div class="queue-policy">Unreviewed drafts are discarded after 24 business hours.</div>
+      </div>
+
+      <div class="queue-wrap">
+        <table class="queue-tbl">
+          <thead>
+            <tr>
+              <th>Recipient</th>
+              <th>Subject</th>
+              <th>Trigger</th>
+              <th>Expires In</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="qt-recipient">Priya Sharma</td>
+              <td class="qt-subject">Your renewal is in 14 days. Time to lock in before your window closes</td>
+              <td><span class="qt-pill">Renewal 14 days</span></td>
+              <td class="qt-expiry" style="color:#DC2626">6h 20m</td>
+              <td><button class="qt-action">Review →</button></td>
+            </tr>
+            <tr>
+              <td class="qt-recipient">Marcus Chen</td>
+              <td class="qt-subject">30 days to your renewal. Here is what today's best rate looks like</td>
+              <td><span class="qt-pill">Renewal 30 days</span></td>
+              <td class="qt-expiry" style="color:#EAB308">11h 55m</td>
+              <td><button class="qt-action">Review →</button></td>
+            </tr>
+            <tr>
+              <td class="qt-recipient">Artem Sheika</td>
+              <td class="qt-subject">The Bank of Canada held today. Here is what it means for your September renewal</td>
+              <td><span class="qt-pill">BoC Rate Hold</span></td>
+              <td class="qt-expiry" style="color:#000">18h 42m</td>
+              <td><button class="qt-action" onclick="goToPreview()">Review →</button></td>
+            </tr>
+            <tr>
+              <td class="qt-recipient">Tianne Nadyku</td>
+              <td class="qt-subject">Rates dropped this week. Your renewal window is opening up</td>
+              <td><span class="qt-pill">Rate drop 0.15%</span></td>
+              <td class="qt-expiry" style="color:#000">22h 10m</td>
+              <td><button class="qt-action">Review →</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <!-- SCREEN 3 — EMAIL PREVIEW -->
+    <div class="screen" id="screen-email-preview">
+      <button class="back-link" onclick="goBackToQueue()">← Back to Queue</button>
+
+      <div class="page-header">
+        <div class="page-title">Review Email</div>
+        <div class="page-subtitle">Artem Sheika · BoC Rate Hold — May 3, 2026</div>
+      </div>
+
+      <div class="preview-layout">
+        <div class="preview-col-left">
+          <div class="rh-card">
+            <div class="section-label">Draft email</div>
+            <div class="email-divider">
+              <div class="email-to">To: artem.sheika@gmail.com</div>
+              <div class="email-subject">The Bank of Canada held today. Here's what it means for your September renewal</div>
+            </div>
+            <div class="email-body">Hi Artem,
+
+This morning the Bank of Canada held its overnight rate at 2.25%, the third consecutive hold.
+
+Here's what it means for you specifically: fixed rates have been easing in response, and today's best 5-year fixed sits at 4.19%. With your mortgage of $487,000 renewing on September 3, 2026. That's 138 days from now, and this is a window worth paying attention to.
+
+Locking in now isn't a requirement. But understanding your options before your renewal window opens means you're making a decision, not reacting to one.
+
+When you're ready, your Ratehub dashboard has your full renewal picture, including today's best rates for your profile.
+
+The Ratehub Team</div>
+            <button class="email-cta">View in Ratehub Ready →</button>
+          </div>
+        </div>
+
+        <div class="preview-col-right">
+          <div class="rh-card">
+            <div id="review-panel-default">
+              <div class="section-label">How this was generated</div>
+              <div class="agent-summary">
+                <div class="agent-row"><span class="agent-row-label">Agent 1: Market Monitor</span><span class="agent-row-value">BoC hold detected</span></div>
+                <div class="agent-row"><span class="agent-row-label">Agent 2: User Profile</span><span class="agent-row-value">Artem, renewal in 138 days</span></div>
+                <div class="agent-row"><span class="agent-row-label">Agent 3: Content Generation</span><span class="agent-row-value">Tone: informational</span></div>
+                <div class="agent-row"><span class="agent-row-label">Agent 4: QA + Compliance</span><span class="agent-row-value">Passed all checks ✓</span></div>
+              </div>
+              <div class="expiry-warning"><span class="expiry-clock">⏱</span> Expires in 18h 42m. Approve or this draft will be discarded.</div>
+              <div class="action-buttons">
+                <button class="btn-approve" onclick="approveEmail()">Approve &amp; Send</button>
+                <button class="btn-request-edits">Request Edits</button>
+                <button class="btn-reject-text">Reject</button>
+              </div>
+              <div class="action-disclaimer">Approved emails are sent immediately.<br>Rejected emails are logged and discarded.</div>
+            </div>
+            <div id="review-panel-success" style="display:none; text-align:center; padding: 16px 0;">
+              <div class="success-check">✓</div>
+              <div class="success-title">Email approved and sent to Artem</div>
+              <div class="success-time" id="sent-time-display"></div>
+              <button class="btn btn-outline-teal" onclick="goBackToQueue()">Back to Queue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- SCREEN 4 — PARAMETERS -->
+    <div class="screen" id="screen-parameters">
+      <div class="page-header">
+        <div class="page-title">Agent Parameters</div>
+        <div class="page-subtitle">Configure how Ratehub Pulse monitors, drafts, and delivers emails</div>
+      </div>
+
+      <div class="param-stack">
+
+        <div class="rh-card">
+          <div class="section-label">Campaign Mode</div>
+          <p class="param-desc">Selecting a mode configures Agent 1, 2, and 3 automatically. One selection cascades across all agents.</p>
+          <div class="mode-row">
+            <button class="mode-btn selected" onclick="selectOption(this)">
+              <div class="mode-btn-name">Announcement</div>
+              <div class="mode-btn-desc">Triggered by BoC decisions · Tone: informational · CTA: See your rates</div>
+            </button>
+            <button class="mode-btn" onclick="selectOption(this)">
+              <div class="mode-btn-name">Urgency</div>
+              <div class="mode-btn-desc">Renewal within 30 days · Tone: direct · CTA: Start your renewal</div>
+            </button>
+            <button class="mode-btn" onclick="selectOption(this)">
+              <div class="mode-btn-name">Nurture</div>
+              <div class="mode-btn-desc">90+ days out · Tone: reassuring · CTA: Learn more</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="rh-card">
+          <div class="section-label" style="margin-bottom: 20px;">Segmentation &amp; Timing</div>
+          <div class="seg-grid">
+            <div class="seg-setting">
+              <div class="seg-setting-label">Renewal window</div>
+              <select class="seg-select">
+                <option>30 days</option><option>60 days</option>
+                <option selected>90 days</option><option>120 days</option>
+              </select>
+            </div>
+            <div class="seg-setting">
+              <div class="seg-setting-label">Max emails per user</div>
+              <select class="seg-select">
+                <option>1 per week</option>
+                <option selected>1 per 2 weeks</option>
+                <option>1 per month</option>
+              </select>
+            </div>
+            <div class="seg-setting">
+              <div class="seg-setting-label">Send time</div>
+              <select class="seg-select">
+                <option selected>Morning (9–11am)</option>
+                <option>Afternoon (1–3pm)</option>
+                <option>Evening (5–7pm)</option>
+              </select>
+            </div>
+            <div class="seg-setting">
+              <div class="seg-setting-label">Blackout periods</div>
+              <select class="seg-select">
+                <option>None</option>
+                <option selected>BoC announcement week</option>
+                <option>Market volatility days</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="rh-card">
+          <div class="section-label">Market Trigger Threshold</div>
+          <p class="param-desc">Agent 1 only sends a signal when a market change meets or exceeds this threshold. Prevents back-to-back sends during volatile periods.</p>
+          <div class="mode-row">
+            <button class="mode-btn" onclick="selectOption(this)">
+              <div class="mode-btn-name">Conservative</div>
+              <div class="mode-btn-desc">BoC announcements only</div>
+            </button>
+            <button class="mode-btn selected" onclick="selectOption(this)">
+              <div class="mode-btn-name">Moderate</div>
+              <div class="mode-btn-desc">BoC + 0.25% rate moves</div>
+            </button>
+            <button class="mode-btn" onclick="selectOption(this)">
+              <div class="mode-btn-name">Sensitive</div>
+              <div class="mode-btn-desc">BoC + 0.10% rate moves + bond yield shifts</div>
+            </button>
+          </div>
+          <div class="expiry-block">
+            <div class="expiry-block-title">Approval expiry window</div>
+            <div class="expiry-block-desc">Unreviewed drafts are discarded after this window. This is a forcing function — no email sends without human sign-off.</div>
+          </div>
+          <div class="expiry-row">
+            <button class="expiry-btn" onclick="selectOption(this)">12 hours</button>
+            <button class="expiry-btn selected" onclick="selectOption(this)">24 hours</button>
+            <button class="expiry-btn" onclick="selectOption(this)">48 hours</button>
+          </div>
+          <div class="save-row">
+            <span class="save-confirm" id="save-confirm">✓ Parameters saved</span>
+            <button class="btn btn-teal" onclick="saveParameters()">Save Parameters</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- SCREEN 5 — SENT LOG -->
+    <div class="screen" id="screen-sent-log">
+      <div class="page-header">
+        <div class="page-title">Sent Log</div>
+        <div class="page-subtitle">All approved emails sent to users this month</div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-card-label">Sent this month</div>
+          <div class="stat-card-number">847</div>
+          <div class="stat-card-context">Delivered to users</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Avg. open rate</div>
+          <div class="stat-card-number">61%</div>
+          <div class="stat-card-context">Email engagement</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Avg. approval time</div>
+          <div class="stat-card-number">3.2 hrs</div>
+          <div class="stat-card-context">From draft to send</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Rejection rate</div>
+          <div class="stat-card-number">6%</div>
+          <div class="stat-card-context">Drafts not approved</div>
+        </div>
+      </div>
+
+      <div class="log-table-wrap">
+        <table class="log-table">
+          <thead>
+            <tr>
+              <th>Recipient</th><th>Trigger</th><th>Sent</th>
+              <th>Approved By</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="lt-recipient">Artem Sheika</td>
+              <td class="lt-detail">BoC Rate Hold</td>
+              <td class="lt-detail">May 3, 2026 9:43am</td>
+              <td class="lt-detail">Sarah M.</td>
+              <td><span class="lt-pill-sent">Sent</span></td>
+            </tr>
+            <tr>
+              <td class="lt-recipient">Tianne Nadyku</td>
+              <td class="lt-detail">BoC Rate Hold</td>
+              <td class="lt-detail">May 3, 2026 9:51am</td>
+              <td class="lt-detail">Sarah M.</td>
+              <td><span class="lt-pill-sent">Sent</span></td>
+            </tr>
+            <tr>
+              <td class="lt-recipient">Marcus Chen</td>
+              <td class="lt-detail">Rate drop 0.15%</td>
+              <td class="lt-detail">Apr 28, 2026 10:12am</td>
+              <td class="lt-detail">David K.</td>
+              <td><span class="lt-pill-sent">Sent</span></td>
+            </tr>
+            <tr>
+              <td class="lt-recipient">Priya Sharma</td>
+              <td class="lt-detail">Renewal 30 days</td>
+              <td class="lt-detail">Apr 25, 2026 2:03pm</td>
+              <td class="lt-detail">Sarah M.</td>
+              <td><span class="lt-pill-sent">Sent</span></td>
+            </tr>
+            <tr>
+              <td class="lt-recipient">James Wu</td>
+              <td class="lt-detail">BoC Rate Cut</td>
+              <td class="lt-detail">Apr 16, 2026 11:20am</td>
+              <td class="lt-detail">David K.</td>
+              <td><span class="lt-pill-rejected">Rejected</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const navLinks = document.querySelectorAll('.nav-link[data-screen]');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        const target = link.dataset.screen;
+        setActiveNav(target);
+        showScreen('screen-' + target);
+      });
+    });
+
+    function setActiveNav(screenKey) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const match = document.querySelector(`.nav-link[data-screen="${screenKey}"]`);
+      if (match) match.classList.add('active');
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function goToPreview() {
+      setActiveNav('email-queue');
+      showScreen('screen-email-preview');
+      document.getElementById('review-panel-default').style.display = 'block';
+      document.getElementById('review-panel-success').style.display = 'none';
+    }
+
+    function goBackToQueue() {
+      setActiveNav('email-queue');
+      showScreen('screen-email-queue');
+    }
+
+    function approveEmail() {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('en-CA', { hour: 'numeric', minute: '2-digit', hour12: true });
+      document.getElementById('sent-time-display').textContent = 'Sent May 3, 2026 at ' + timeStr;
+      document.getElementById('review-panel-default').style.display = 'none';
+      document.getElementById('review-panel-success').style.display = 'block';
+    }
+
+    function toggleLog(btn) {
+      const panel = btn.nextElementSibling;
+      const isOpen = panel.classList.toggle('open');
+      btn.textContent = isOpen ? 'Hide Log' : 'View Log →';
+    }
+
+    function selectOption(btn) {
+      btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+
+    function saveParameters() {
+      const msg = document.getElementById('save-confirm');
+      msg.classList.add('visible');
+      setTimeout(() => msg.classList.remove('visible'), 2000);
+    }
+
+    (function() {
+      var G = '#16A34A', Y = '#EAB308', R = '#DC2626';
+      var bars = [
+        { id: 'uptime-1', seq: [G,G,Y,G,G,G,G,R,G,G,G,G,G,G,Y,G,G,G,G,G,G,G,Y,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G] },
+        { id: 'uptime-2', seq: [G,G,G,G,G,R,G,G,G,G,G,Y,G,G,G,G,G,G,G,G,G,G,G,G,G,Y,G,G,G,G,G,G,G,G,G,G,G,G,G,G] },
+        { id: 'uptime-3', seq: [G,G,G,G,G,G,Y,G,G,G,G,G,G,G,G,G,G,G,G,G,Y,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G] },
+        { id: 'uptime-4', seq: [G,G,G,Y,G,G,G,G,G,G,G,G,G,G,G,G,G,Y,G,G,G,G,G,G,G,G,G,G,G,Y,G,G,G,G,G,G,G,G,G,G] }
+      ];
+      bars.forEach(function(b) {
+        var el = document.getElementById(b.id);
+        if (el) el.innerHTML = b.seq.map(function(c) {
+          return '<div class="ah-seg" style="background:' + c + '"></div>';
+        }).join('');
+      });
+    })();
+  </script>
+</body>
+</html>
