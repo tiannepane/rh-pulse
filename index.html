@@ -141,9 +141,9 @@
     .log-line { font-size: 12px; font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace; color: #000; line-height: 1.8; }
 
     /* ── SCREEN 2 — EMAIL QUEUE ── */
-    #screen-email-queue .page-title { margin-bottom: 4px; }
-    #screen-email-queue .page-subtitle { margin-bottom: 4px; }
-    .queue-policy { font-size: 13px; color: #000; margin-bottom: 32px; }
+    #screen-email-queue .page-title { margin-bottom: 6px; }
+    #screen-email-queue .page-subtitle { margin-bottom: 32px; }
+    .queue-policy { display: none; }
     .queue-wrap { border: 1px solid #E8E8E8; border-radius: 12px; overflow: hidden; padding: 0 24px; }
     .queue-tbl { width: 100%; border-collapse: collapse; }
     .queue-tbl thead tr { border-bottom: 1px solid #E8E8E8; }
@@ -432,8 +432,7 @@
     <div class="screen" id="screen-email-queue">
       <div class="page-header">
         <div class="page-title">Email Queue</div>
-        <div class="page-subtitle">4 emails pending human approval</div>
-        <div class="queue-policy">Unreviewed drafts are discarded after 24 business hours.</div>
+        <div class="page-subtitle">4 emails pending human approval — unreviewed drafts are discarded after 24 business hours.</div>
       </div>
 
       <div class="queue-wrap">
