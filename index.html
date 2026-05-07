@@ -46,6 +46,19 @@
     .page-title { font-size: 32px; font-weight: 700; color: #000; letter-spacing: -0.5px; margin-bottom: 6px; }
     .page-subtitle { font-size: 15px; color: #000; font-weight: 400; margin-bottom: 40px; }
 
+    /* ── PAGE HEADER (redesigned) ── */
+    .ph-wrap { margin-bottom: 0; }
+    .ph-row1 { display: flex; align-items: center; justify-content: space-between; }
+    .ph-title { font-size: 28px; font-weight: 700; color: #000; letter-spacing: -0.3px; }
+    .ph-badge { display: flex; align-items: center; gap: 8px; }
+    .ph-dot { width: 10px; height: 10px; border-radius: 50%; background: #16A34A; flex-shrink: 0; animation: dotPulse 2s ease-in-out infinite; }
+    .ph-badge-text { font-size: 14px; font-weight: 600; color: #16A34A; }
+    .ph-row2 { margin-top: 10px; display: flex; align-items: center; justify-content: space-between; }
+    .ph-sub { font-size: 15px; color: #000; font-weight: 400; }
+    .ph-sep { color: #D1D5DB; padding: 0 10px; font-weight: 400; }
+    .ph-meta { font-size: 15px; color: #888; font-weight: 400; }
+    .ph-divider { border: none; border-top: 1px solid #E8E8E8; margin-top: 24px; margin-bottom: 32px; }
+
     .rh-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 28px 32px; }
 
     .btn {
@@ -80,7 +93,7 @@
 
     /* Grid */
     .ah-grid { display: flex; flex-direction: column; gap: 16px; }
-    .ah-row2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
+    .ah-row2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
 
     /* Shared status pill */
     .ah-pill { display: inline-flex; align-items: center; gap: 6px; background: #F0FDF4; color: #16A34A; font-size: 12px; font-weight: 600; border-radius: 20px; padding: 4px 12px; white-space: nowrap; }
@@ -118,7 +131,7 @@
     .a1-src-time { font-size: 11px; color: #000; white-space: nowrap; flex-shrink: 0; }
 
     /* Agents 2, 3, 4 — small cards */
-    .ah-sm-card { background: #FFFFFF; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04); padding: 24px; display: flex; flex-direction: column; height: 100%; }
+    .ah-sm-card { background: #FFFFFF; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04); padding: 24px; display: flex; flex-direction: column; }
     .ah-sm-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .ah-sm-num { font-size: 11px; font-weight: 600; color: #0077B6; letter-spacing: 0.8px; text-transform: uppercase; }
     .ah-sm-name { font-size: 16px; font-weight: 700; color: #000; margin-bottom: 4px; }
@@ -133,31 +146,66 @@
     .ah-sm-uptime-label { font-size: 11px; color: #000; font-weight: 400; }
     .ah-sm-uptime-pct { font-size: 11px; color: #000; font-weight: 600; }
     .ah-sm-bar { display: flex; gap: 2px; height: 12px; width: 100%; }
-    .ah-sm-vlog { display: inline-block; margin-top: auto; padding-top: 12px; font-size: 12px; color: #0077B6; font-weight: 500; cursor: pointer; background: none; border: none; font-family: inherit; text-decoration: none; }
+    .ah-sm-vlog { display: inline-block; margin-top: 16px; padding-top: 0; font-size: 12px; color: #0077B6; font-weight: 500; cursor: pointer; background: none; border: none; font-family: inherit; text-decoration: none; }
     .ah-sm-vlog:hover { text-decoration: underline; }
 
     .log-panel { display: none; background: #fff; border: 1px solid #e8e8e8; border-radius: 8px; padding: 16px; margin-top: 12px; }
     .log-panel.open { display: block; }
+    .ah-sm-card .log-panel { height: 160px; overflow-y: auto; scroll-behavior: smooth; }
     .log-line { font-size: 12px; font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace; color: #000; line-height: 1.8; }
 
     /* ── SCREEN 2 — EMAIL QUEUE ── */
     #screen-email-queue .page-title { margin-bottom: 6px; }
-    #screen-email-queue .page-subtitle { margin-bottom: 32px; }
+    #screen-email-queue .page-subtitle { margin-bottom: 32px; font-size: 14px; }
     .queue-policy { display: none; }
     .queue-wrap { border: 1px solid #E8E8E8; border-radius: 12px; overflow: hidden; padding: 0 24px; }
     .queue-tbl { width: 100%; border-collapse: collapse; }
     .queue-tbl thead tr { border-bottom: 1px solid #E8E8E8; }
     .queue-tbl th { font-size: 11px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 0.5px; padding: 20px 16px 12px 0; text-align: left; white-space: nowrap; }
-    .queue-tbl th:last-child { text-align: right; padding-right: 0; }
-    .queue-tbl td { padding: 16px 16px 16px 0; vertical-align: middle; border-bottom: 1px solid #F0F0F0; }
+    .queue-tbl td { padding: 18px 16px 18px 0; vertical-align: middle; border-bottom: 1px solid #F0F0F0; }
     .queue-tbl tbody tr:last-child td { border-bottom: none; }
-    .queue-tbl td:last-child { text-align: right; padding-right: 0; }
+    .queue-tbl tbody tr { cursor: pointer; }
+    .queue-tbl tbody tr:hover td { background: #F9F9F9; }
     .qt-recipient { font-size: 14px; font-weight: 600; color: #000; white-space: nowrap; padding-right: 24px !important; }
-    .qt-subject { font-size: 13px; color: #000; font-weight: 400; font-style: italic; max-width: 320px; }
+    .qt-subject { font-size: 13px; color: #000; font-weight: 400; font-style: italic; max-width: 300px; }
     .qt-pill { display: inline-block; background: #EFF6FF; color: #0077B6; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
-    .qt-expiry { font-size: 14px; font-weight: 700; white-space: nowrap; }
-    .qt-action { font-size: 13px; font-weight: 600; color: #0077B6; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; text-decoration: none; white-space: nowrap; }
-    .qt-action:hover { text-decoration: underline; }
+    .qt-conf-low { display: inline-block; background: #FEF2F2; color: #DC2626; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+    .qt-conf-medium { display: inline-block; background: #FFFBEB; color: #92400E; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+    .qt-conf-high { display: inline-block; background: #F0FDF4; color: #16A34A; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+    .qt-expiry { font-size: 15px; font-weight: 700; white-space: nowrap; }
+    .qt-held { font-size: 13px; font-weight: 600; color: #DC2626; white-space: nowrap; }
+
+    /* ── EMAIL REVIEW DRAWER ── */
+    .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.15); z-index: 999; }
+    .drawer-overlay.open { display: block; }
+    .drawer-panel { position: fixed; right: -560px; top: 0; bottom: 0; width: 540px; background: #FFFFFF; box-shadow: -4px 0 24px rgba(0,0,0,0.10); z-index: 1000; overflow-y: auto; padding: 40px 36px; transition: right 0.28s cubic-bezier(0.4,0,0.2,1); }
+    .drawer-panel.open { right: 0; }
+    .drawer-back { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: #0077B6; font-weight: 500; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; margin-bottom: 32px; text-decoration: none; }
+    .drawer-back:hover { text-decoration: underline; }
+    .drawer-meta { font-size: 13px; color: #888; margin-bottom: 16px; }
+    .drawer-draft-label { font-size: 11px; font-weight: 600; color: #0077B6; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .drawer-email-box { border: 1px solid #E8E8E8; border-radius: 8px; padding: 24px 28px; margin-bottom: 28px; }
+    .drawer-email-to { font-size: 13px; color: #888; margin-bottom: 12px; }
+    .drawer-email-subject { font-size: 15px; font-weight: 600; color: #000; margin-bottom: 16px; }
+    .drawer-email-divider { border: none; border-bottom: 1px solid #F0F0F0; margin-bottom: 16px; }
+    .drawer-email-body { font-size: 14px; color: #000; line-height: 1.8; white-space: pre-line; }
+    .drawer-gen-label { font-size: 11px; font-weight: 600; color: #0077B6; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+    .drawer-agent-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F5F5F5; }
+    .drawer-agent-row:last-child { border-bottom: none; }
+    .drawer-agent-left { font-size: 14px; color: #000; font-weight: 500; }
+    .drawer-agent-right { font-size: 14px; color: #000; font-weight: 400; text-align: right; }
+    .drawer-expiry-box { background: #F8F8F8; border: 1px solid #E8E8E8; border-radius: 8px; padding: 14px 18px; margin-top: 20px; font-size: 13px; color: #000; line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
+    .drawer-expiry-icon { color: #0077B6; font-size: 14px; flex-shrink: 0; line-height: 1.5; }
+    .drawer-btn-approve { background: #0077B6; color: #fff; font-size: 15px; font-weight: 600; padding: 14px; border-radius: 8px; width: 100%; margin-top: 24px; margin-bottom: 10px; border: none; cursor: pointer; font-family: inherit; text-align: center; }
+    .drawer-btn-approve:hover { opacity: 0.88; }
+    .drawer-btn-discard { background: white; border: none; color: #DC2626; font-size: 13px; font-weight: 400; padding: 8px; width: 100%; text-align: center; cursor: pointer; font-family: inherit; }
+    .drawer-btn-discard:hover { text-decoration: underline; }
+    .drawer-disclaimer { font-size: 12px; color: #888; text-align: center; margin-bottom: 20px; }
+    .drawer-expiry-box-low { background: #FFFBEB; border: 1px solid #EAB308; border-radius: 8px; padding: 14px 18px; margin-top: 20px; font-size: 13px; color: #000; line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
+    .drawer-expiry-box-high { background: #F0FDF4; border: 1px solid #16A34A; border-radius: 8px; padding: 14px 18px; margin-top: 20px; font-size: 13px; color: #000; line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
+    .drawer-review-required { font-size: 11px; color: #DC2626; font-weight: 600; text-align: center; margin-top: 24px; margin-bottom: 8px; }
+    .drawer-btn-discard-solo { background: white; border: 1px solid #E8E8E8; color: #DC2626; font-size: 14px; font-weight: 500; padding: 12px; border-radius: 8px; width: 100%; text-align: center; cursor: pointer; font-family: inherit; margin-top: 20px; }
+    .drawer-btn-discard-solo:hover { background: #FEF2F2; }
 
     /* ── SCREEN 3 — EMAIL PREVIEW ── */
     .back-link { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: #0077B6; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; margin-bottom: 24px; text-decoration: none; }
@@ -249,9 +297,9 @@
   <nav class="mainnav">
     <a class="nav-brand" href="#">ratehub.ca</a>
     <div class="nav-right">
-      <button class="nav-link" data-screen="email-queue">Email Queue</button>
+      <button class="nav-link active" data-screen="email-queue">Email Queue</button>
       <button class="nav-link" data-screen="sent-log">Sent Log</button>
-      <button class="nav-link active" data-screen="agent-health">Agent Health</button>
+      <button class="nav-link" data-screen="agent-health">Agent Health</button>
       <button class="nav-link" data-screen="parameters">Parameters</button>
       <span class="nav-pill">Internal Portal</span>
     </div>
@@ -260,10 +308,17 @@
   <div class="page-wrapper">
 
     <!-- SCREEN 1 — AGENT HEALTH -->
-    <div class="screen active" id="screen-agent-health">
-      <div class="page-header">
-        <div class="page-title">Agent Health</div>
-        <div class="page-subtitle">Live status of all 4 agents powering Ratehub Pulse</div>
+    <div class="screen" id="screen-agent-health">
+      <div class="ph-wrap">
+        <div class="ph-row1">
+          <div class="ph-title">Agent Health</div>
+          <div class="ph-badge"><span class="ph-dot"></span><span class="ph-badge-text">Live</span></div>
+        </div>
+        <div class="ph-row2">
+          <span class="ph-sub">Each agent handles a dedicated stage of the pipeline — from monitoring market signals to drafting, QA, and compliance.</span>
+<span class="ph-meta">All systems operational</span>
+        </div>
+        <hr class="ph-divider" />
       </div>
 
       <div class="stat-grid">
@@ -429,10 +484,17 @@
 
 
     <!-- SCREEN 2 — EMAIL QUEUE -->
-    <div class="screen" id="screen-email-queue">
-      <div class="page-header">
-        <div class="page-title">Email Queue</div>
-        <div class="page-subtitle">4 emails pending human approval — unreviewed drafts are discarded after 24 business hours.</div>
+    <div class="screen active" id="screen-email-queue">
+      <div class="ph-wrap">
+        <div class="ph-row1">
+          <div class="ph-title">Email Queue</div>
+          <div class="ph-badge"><span class="ph-dot"></span><span class="ph-badge-text">Live</span></div>
+        </div>
+        <div class="ph-row2">
+          <span class="ph-sub">Low confidence emails require approval before sending. High confidence emails send automatically in 24h unless discarded.</span>
+<span class="ph-meta">Last updated: just now</span>
+        </div>
+        <hr class="ph-divider" />
       </div>
 
       <div class="queue-wrap">
@@ -442,38 +504,38 @@
               <th>Recipient</th>
               <th>Subject</th>
               <th>Trigger</th>
-              <th>Expires In</th>
-              <th>Action</th>
+              <th>Confidence</th>
+              <th>Status / Deadline</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr onclick="openDrawer('priya')">
               <td class="qt-recipient">Priya Sharma</td>
               <td class="qt-subject">Your renewal is in 14 days. Time to lock in before your window closes</td>
               <td><span class="qt-pill">Renewal 14 days</span></td>
-              <td class="qt-expiry" style="color:#DC2626">6h 20m</td>
-              <td><button class="qt-action">Review →</button></td>
+              <td><span class="qt-conf-low">Low</span></td>
+              <td class="qt-held">Held for review</td>
             </tr>
-            <tr>
-              <td class="qt-recipient">Marcus Chen</td>
-              <td class="qt-subject">30 days to your renewal. Here is what today's best rate looks like</td>
-              <td><span class="qt-pill">Renewal 30 days</span></td>
-              <td class="qt-expiry" style="color:#EAB308">11h 55m</td>
-              <td><button class="qt-action">Review →</button></td>
-            </tr>
-            <tr>
-              <td class="qt-recipient">Artem Sheika</td>
-              <td class="qt-subject">The Bank of Canada held today. Here is what it means for your September renewal</td>
-              <td><span class="qt-pill">BoC Rate Hold</span></td>
-              <td class="qt-expiry" style="color:#000">18h 42m</td>
-              <td><button class="qt-action" onclick="goToPreview()">Review →</button></td>
-            </tr>
-            <tr>
+            <tr onclick="openDrawer('tianne')">
               <td class="qt-recipient">Tianne Nadyku</td>
               <td class="qt-subject">Rates dropped this week. Your renewal window is opening up</td>
               <td><span class="qt-pill">Rate drop 0.15%</span></td>
-              <td class="qt-expiry" style="color:#000">22h 10m</td>
-              <td><button class="qt-action">Review →</button></td>
+              <td><span class="qt-conf-low">Low</span></td>
+              <td class="qt-held">Held for review</td>
+            </tr>
+            <tr onclick="openDrawer('artem')">
+              <td class="qt-recipient">Artem Sheika</td>
+              <td class="qt-subject">The Bank of Canada held today. Here is what it means for your September renewal</td>
+              <td><span class="qt-pill">BoC Rate Hold</span></td>
+              <td><span class="qt-conf-medium">Medium</span></td>
+              <td class="qt-expiry" style="color:#000">18h 42m</td>
+            </tr>
+            <tr onclick="openDrawer('marcus')">
+              <td class="qt-recipient">Marcus Chen</td>
+              <td class="qt-subject">30 days to your renewal. Here is what today's best rate looks like</td>
+              <td><span class="qt-pill">Renewal 30 days</span></td>
+              <td><span class="qt-conf-high">High</span></td>
+              <td class="qt-expiry" style="color:#16A34A">11h 55m</td>
             </tr>
           </tbody>
         </table>
@@ -545,9 +607,16 @@ The Ratehub Team</div>
 
     <!-- SCREEN 4 — PARAMETERS -->
     <div class="screen" id="screen-parameters">
-      <div class="page-header">
-        <div class="page-title">Agent Parameters</div>
-        <div class="page-subtitle">Configure how Ratehub Pulse monitors, drafts, and delivers emails</div>
+      <div class="ph-wrap">
+        <div class="ph-row1">
+          <div class="ph-title">Parameters</div>
+          <div class="ph-badge"><span class="ph-dot"></span><span class="ph-badge-text">Live</span></div>
+        </div>
+        <div class="ph-row2">
+          <span class="ph-sub">Set the rules that control when agents trigger, who gets targeted, and how long drafts wait for review.</span>
+<span class="ph-meta">Last modified: May 3, 2026</span>
+        </div>
+        <hr class="ph-divider" />
       </div>
 
       <div class="param-stack">
@@ -646,9 +715,16 @@ The Ratehub Team</div>
 
     <!-- SCREEN 5 — SENT LOG -->
     <div class="screen" id="screen-sent-log">
-      <div class="page-header">
-        <div class="page-title">Sent Log</div>
-        <div class="page-subtitle">All approved emails sent to users this month</div>
+      <div class="ph-wrap">
+        <div class="ph-row1">
+          <div class="ph-title">Sent Log</div>
+          <div class="ph-badge"><span class="ph-dot"></span><span class="ph-badge-text">Live</span></div>
+        </div>
+        <div class="ph-row2">
+          <span class="ph-sub">All emails approved and sent by the system are logged here, including auto-sends and discarded drafts.</span>
+<span class="ph-meta">Last updated: today at 11:43 AM</span>
+        </div>
+        <hr class="ph-divider" />
       </div>
 
       <div class="stat-grid">
@@ -725,6 +801,28 @@ The Ratehub Team</div>
 
   </div>
 
+  <!-- EMAIL REVIEW DRAWER -->
+  <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+  <div class="drawer-panel" id="drawer-panel">
+    <button class="drawer-back" onclick="closeDrawer()">← Back to Queue</button>
+    <div class="drawer-meta" id="drawer-meta"></div>
+    <div class="drawer-disclaimer">Approved emails send immediately. Discarded emails are logged.</div>
+    <div class="drawer-draft-label">Draft email</div>
+    <div class="drawer-email-box">
+      <div class="drawer-email-to" id="drawer-to"></div>
+      <div class="drawer-email-subject" id="drawer-subject"></div>
+      <hr class="drawer-email-divider" />
+      <div class="drawer-email-body" id="drawer-body"></div>
+    </div>
+    <div class="drawer-gen-label">How this was generated</div>
+    <div id="drawer-agents"></div>
+    <div id="drawer-expiry-box" class="drawer-expiry-box">
+      <span class="drawer-expiry-icon">⏱</span>
+      <span id="drawer-expiry-text"></span>
+    </div>
+    <div id="drawer-actions"></div>
+  </div>
+
   <script>
     const navLinks = document.querySelectorAll('.nav-link[data-screen]');
     navLinks.forEach(link => {
@@ -781,6 +879,77 @@ The Ratehub Team</div>
       const msg = document.getElementById('save-confirm');
       msg.classList.add('visible');
       setTimeout(() => msg.classList.remove('visible'), 2000);
+    }
+
+    var queueData = {
+      priya: {
+        confidence: 'low',
+        meta: 'Priya Sharma · Renewal 14 days · May 7, 2026',
+        to: 'To: priya.sharma@gmail.com',
+        subject: 'Your renewal is in 14 days. Time to lock in before your window closes',
+        body: 'Hi Priya,\n\nYour mortgage renews on May 17, 2026. That is 14 days from now.\n\nFixed rates have been easing in recent weeks, and today\'s best 5-year fixed sits at 4.19%. With your mortgage of $521,000, this window is worth paying attention to.\n\nLocking in now gives you certainty before your renewal date arrives. Ratehub can show you what is available in about two minutes.\n\nWarm regards,\nThe Ratehub Team',
+        agents: [['Market Monitor','Renewal 14 days detected'],['User Profile','Priya, renewal in 14 days'],['Content Generation','Tone: informational'],['QA + Compliance','Passed all checks ✓']],
+        expiry: 'This email is flagged and will not send without your approval. Discard it to remove it from the queue.'
+      },
+      tianne: {
+        confidence: 'low',
+        meta: 'Tianne Nadyku · Rate drop 0.15% · May 7, 2026',
+        to: 'To: tianne.nadyku@gmail.com',
+        subject: 'Rates dropped this week. Your renewal window is opening up',
+        body: 'Hi Tianne,\n\nFixed mortgage rates dropped 0.15% this week following lender adjustments after the Bank of Canada\'s last hold.\n\nWith your $612,000 mortgage renewing in 95 days, this shift is relevant to your situation. Today\'s best 5-year fixed sits at 4.19%, down from 4.34% last month.\n\nIt may be worth starting to compare options now, before your renewal window narrows.\n\nWarm regards,\nThe Ratehub Team',
+        agents: [['Market Monitor','Rate drop 0.15% detected'],['User Profile','Tianne, renewal in 95 days'],['Content Generation','Tone: informational'],['QA + Compliance','Passed all checks ✓']],
+        expiry: 'This email is flagged and will not send without your approval. Discard it to remove it from the queue.'
+      },
+      artem: {
+        confidence: 'medium',
+        meta: 'Artem Sheika · BoC Rate Hold · May 3, 2026',
+        to: 'To: artem.sheika@gmail.com',
+        subject: 'The Bank of Canada held today. Here is what it means for your September renewal',
+        body: 'Hi Artem,\n\nThis morning the Bank of Canada held its overnight rate at 2.25%, the third consecutive hold.\n\nHere\'s what it means for you specifically: fixed rates have been easing in response, and today\'s best 5-year fixed sits at 4.19%. With your mortgage of $487,000 renewing on September 3, 2026. That\'s 138 days from now, and this is a window worth paying attention to.\n\nLocking in now isn\'t a requirement. But understanding your options before your renewal window opens means you\'re making a decision, not reacting to one.\n\nWhen you\'re ready, your Ratehub dashboard has your full renewal picture, including today\'s best rates for your profile.\n\nThe Ratehub Team',
+        agents: [['Market Monitor','BoC hold detected'],['User Profile','Artem, renewal in 138 days'],['Content Generation','Tone: informational'],['QA + Compliance','Passed all checks ✓']],
+        expiry: 'This email will auto-send at 3:12 PM tomorrow unless you discard it.'
+      },
+      marcus: {
+        confidence: 'high',
+        meta: 'Marcus Chen · Renewal 30 days · May 7, 2026',
+        to: 'To: marcus.chen@gmail.com',
+        subject: '30 days to your renewal. Here is what today\'s best rate looks like',
+        body: 'Hi Marcus,\n\nYour mortgage renews in 30 days. This is typically when lenders begin rate conversations in earnest.\n\nToday\'s best 5-year fixed rate is 4.19%. Based on your $398,000 mortgage at your current rate of 1.99%, your estimated monthly payment change at renewal would be approximately +$487/mo.\n\nRatehub can show you the full picture and help you compare options before your deadline.\n\nWarm regards,\nThe Ratehub Team',
+        agents: [['Market Monitor','Renewal 30 days detected'],['User Profile','Marcus, renewal in 30 days'],['Content Generation','Tone: informational'],['QA + Compliance','Passed all checks ✓']],
+        expiry: 'This email passed all confidence checks and will send automatically at 11:55 PM tonight. No action needed.'
+      }
+    };
+
+    function openDrawer(personId) {
+      var d = queueData[personId];
+      if (!d) return;
+      document.getElementById('drawer-meta').textContent = d.meta;
+      document.getElementById('drawer-to').textContent = d.to;
+      document.getElementById('drawer-subject').textContent = d.subject;
+      document.getElementById('drawer-body').textContent = d.body;
+      document.getElementById('drawer-expiry-text').textContent = d.expiry;
+      document.getElementById('drawer-agents').innerHTML = d.agents.map(function(a, i) {
+        return '<div class="drawer-agent-row"><span class="drawer-agent-left">Agent ' + (i + 1) + ': ' + a[0] + '</span><span class="drawer-agent-right">' + a[1] + '</span></div>';
+      }).join('');
+      var boxClass = d.confidence === 'low' ? 'drawer-expiry-box-low' : d.confidence === 'high' ? 'drawer-expiry-box-high' : 'drawer-expiry-box';
+      document.getElementById('drawer-expiry-box').className = boxClass;
+      var actionsEl = document.getElementById('drawer-actions');
+      if (d.confidence === 'low') {
+        actionsEl.innerHTML = '<button class="drawer-btn-approve">Approve &amp; Send</button><button class="drawer-btn-discard">Discard draft</button>';
+      } else if (d.confidence === 'medium') {
+        actionsEl.innerHTML = '<button class="drawer-btn-approve">Approve &amp; Send</button><button class="drawer-btn-discard">Discard draft</button>';
+      } else {
+        actionsEl.innerHTML = '<button class="drawer-btn-discard-solo">Discard draft</button>';
+      }
+      document.getElementById('drawer-overlay').classList.add('open');
+      document.getElementById('drawer-panel').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      document.getElementById('drawer-overlay').classList.remove('open');
+      document.getElementById('drawer-panel').classList.remove('open');
+      document.body.style.overflow = '';
     }
 
     (function() {
