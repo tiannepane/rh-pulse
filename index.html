@@ -67,15 +67,15 @@
       font-weight: 500; cursor: pointer; text-decoration: none;
       transition: opacity 0.15s, background 0.15s; border: none;
     }
-    .btn-teal { background: #0077B6; color: #fff; }
+    .btn-teal { background: #4A6FA5; color: #fff; }
     .btn-teal:hover { opacity: 0.88; }
-    .btn-outline-teal { background: #fff; border: 1.5px solid #0077B6; color: #0077B6; }
-    .btn-outline-teal:hover { background: #EFF6FF; }
+    .btn-outline-teal { background: #fff; border: 1.5px solid #4A6FA5; color: #4A6FA5; }
+    .btn-outline-teal:hover { background: #EEF2F8; }
     .btn-full { width: 100%; }
 
     .section-label {
       font-size: 11px; color: #000; text-transform: uppercase;
-      letter-spacing: 0.5px; font-weight: 500; margin-bottom: 16px;
+      letter-spacing: 0.6px; font-weight: 600; margin-bottom: 16px;
     }
 
     /* ── Stat grid (Agent Health + Sent Log) ── */
@@ -161,50 +161,52 @@
     .queue-wrap { border: 1px solid #E8E8E8; border-radius: 12px; overflow: hidden; padding: 0 24px; }
     .queue-tbl { width: 100%; border-collapse: collapse; }
     .queue-tbl thead tr { border-bottom: 1px solid #E8E8E8; }
-    .queue-tbl th { font-size: 11px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 0.5px; padding: 20px 16px 12px 0; text-align: left; white-space: nowrap; }
-    .queue-tbl td { padding: 18px 16px 18px 0; vertical-align: middle; border-bottom: 1px solid #F0F0F0; }
+    .queue-tbl th { font-size: 13px; font-weight: 600; color: #000; text-transform: uppercase; letter-spacing: 0.5px; padding: 20px 16px 12px 0; text-align: left; white-space: nowrap; }
+    .queue-tbl td { padding: 24px 0; vertical-align: middle; border-bottom: 1px solid #F0F0F0; font-size: 16px; }
     .queue-tbl tbody tr:last-child td { border-bottom: none; }
     .queue-tbl tbody tr { cursor: pointer; }
     .queue-tbl tbody tr:hover td { background: #F9F9F9; }
-    .qt-recipient { font-size: 14px; font-weight: 600; color: #000; white-space: nowrap; padding-right: 24px !important; }
-    .qt-subject { font-size: 13px; color: #000; font-weight: 400; font-style: italic; max-width: 300px; }
-    .qt-pill { display: inline-block; background: #EFF6FF; color: #0077B6; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
-    .qt-conf-low { display: inline-block; background: #FEF2F2; color: #DC2626; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
-    .qt-conf-medium { display: inline-block; background: #FFFBEB; color: #92400E; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
-    .qt-conf-high { display: inline-block; background: #F0FDF4; color: #16A34A; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
-    .qt-expiry { font-size: 15px; font-weight: 700; white-space: nowrap; }
-    .qt-held { font-size: 13px; font-weight: 600; color: #DC2626; white-space: nowrap; }
+    .queue-tbl tbody tr.qt-no-hover { cursor: default; }
+    .queue-tbl tbody tr.qt-no-hover:hover td { background: transparent; }
+    .qt-recipient { font-size: 18px; font-weight: 700; color: #000; white-space: nowrap; padding-right: 24px !important; }
+    .qt-subject { font-size: 15px; color: #000; font-weight: 400; font-style: italic; max-width: 420px; line-height: 1.5; }
+    .qt-pill { display: inline-block; background: #F3F4F6; color: #000; font-size: 13px; font-weight: 500; border-radius: 6px; padding: 4px 12px; white-space: nowrap; }
+    .qt-conf-low { display: inline-block; background: #A0522D; color: #FFFFFF; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+    .qt-conf-medium { display: inline-block; background: #4A6FA5; color: #FFFFFF; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+    .qt-conf-high { display: inline-block; background: #4A7C59; color: #FFFFFF; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+    .qt-expiry { font-size: 16px; font-weight: 700; white-space: nowrap; }
+    .qt-held { display: inline-block; background: #A0522D; color: #FFFFFF; font-size: 13px; font-weight: 600; border-radius: 4px; padding: 4px 10px; white-space: nowrap; width: fit-content; }
 
     /* ── EMAIL REVIEW DRAWER ── */
     .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.15); z-index: 999; }
     .drawer-overlay.open { display: block; }
     .drawer-panel { position: fixed; right: -560px; top: 0; bottom: 0; width: 540px; background: #FFFFFF; box-shadow: -4px 0 24px rgba(0,0,0,0.10); z-index: 1000; overflow-y: auto; padding: 40px 36px; transition: right 0.28s cubic-bezier(0.4,0,0.2,1); }
     .drawer-panel.open { right: 0; }
-    .drawer-back { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: #0077B6; font-weight: 500; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; margin-bottom: 32px; text-decoration: none; }
+    .drawer-back { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: #4A6FA5; font-weight: 500; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; margin-bottom: 32px; text-decoration: none; }
     .drawer-back:hover { text-decoration: underline; }
     .drawer-meta { font-size: 13px; color: #888; margin-bottom: 16px; }
-    .drawer-draft-label { font-size: 11px; font-weight: 600; color: #0077B6; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .drawer-draft-label { font-size: 11px; font-weight: 600; color: #4A6FA5; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
     .drawer-email-box { border: 1px solid #E8E8E8; border-radius: 8px; padding: 24px 28px; margin-bottom: 28px; }
     .drawer-email-to { font-size: 13px; color: #888; margin-bottom: 12px; }
     .drawer-email-subject { font-size: 15px; font-weight: 600; color: #000; margin-bottom: 16px; }
     .drawer-email-divider { border: none; border-bottom: 1px solid #F0F0F0; margin-bottom: 16px; }
     .drawer-email-body { font-size: 14px; color: #000; line-height: 1.8; white-space: pre-line; }
-    .drawer-gen-label { font-size: 11px; font-weight: 600; color: #0077B6; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+    .drawer-gen-label { font-size: 11px; font-weight: 600; color: #4A6FA5; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
     .drawer-agent-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F5F5F5; }
     .drawer-agent-row:last-child { border-bottom: none; }
     .drawer-agent-left { font-size: 14px; color: #000; font-weight: 500; }
     .drawer-agent-right { font-size: 14px; color: #000; font-weight: 400; text-align: right; }
-    .drawer-expiry-box { background: #F8F8F8; border: 1px solid #E8E8E8; border-radius: 8px; padding: 14px 18px; margin-top: 20px; font-size: 13px; color: #000; line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
-    .drawer-expiry-icon { color: #0077B6; font-size: 14px; flex-shrink: 0; line-height: 1.5; }
-    .drawer-btn-approve { background: #0077B6; color: #fff; font-size: 15px; font-weight: 600; padding: 14px; border-radius: 8px; width: 100%; margin-top: 24px; margin-bottom: 10px; border: none; cursor: pointer; font-family: inherit; text-align: center; }
+    .drawer-expiry-box { background: #F3F4F6; border: 1px solid #E8E8E8; border-radius: 8px; padding: 14px 18px; margin-top: 20px; font-size: 13px; color: #000; line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
+    .drawer-expiry-icon { color: #4A6FA5; font-size: 14px; flex-shrink: 0; line-height: 1.5; }
+    .drawer-btn-approve { background: #4A6FA5; color: #fff; font-size: 15px; font-weight: 600; padding: 14px; border-radius: 8px; width: 100%; margin-top: 24px; margin-bottom: 10px; border: none; cursor: pointer; font-family: inherit; text-align: center; }
     .drawer-btn-approve:hover { opacity: 0.88; }
-    .drawer-btn-discard { background: white; border: none; color: #DC2626; font-size: 13px; font-weight: 400; padding: 8px; width: 100%; text-align: center; cursor: pointer; font-family: inherit; }
+    .drawer-btn-discard { background: white; border: none; color: #A0522D; font-size: 13px; font-weight: 400; padding: 8px; width: 100%; text-align: center; cursor: pointer; font-family: inherit; }
     .drawer-btn-discard:hover { text-decoration: underline; }
     .drawer-disclaimer { font-size: 12px; color: #888; text-align: center; margin-bottom: 20px; }
-    .drawer-expiry-box-low { background: #FFFBEB; border: 1px solid #EAB308; border-radius: 8px; padding: 14px 18px; margin-top: 20px; font-size: 13px; color: #000; line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
+    .drawer-expiry-box-low { background: #FDF6F0; border: 1px solid #C4956A; border-radius: 8px; padding: 14px 18px; margin-top: 20px; font-size: 13px; color: #000; line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
     .drawer-expiry-box-high { background: #F0FDF4; border: 1px solid #16A34A; border-radius: 8px; padding: 14px 18px; margin-top: 20px; font-size: 13px; color: #000; line-height: 1.5; display: flex; align-items: flex-start; gap: 8px; }
-    .drawer-review-required { font-size: 11px; color: #DC2626; font-weight: 600; text-align: center; margin-top: 24px; margin-bottom: 8px; }
-    .drawer-btn-discard-solo { background: white; border: 1px solid #E8E8E8; color: #DC2626; font-size: 14px; font-weight: 500; padding: 12px; border-radius: 8px; width: 100%; text-align: center; cursor: pointer; font-family: inherit; margin-top: 20px; }
+    .drawer-review-required { font-size: 11px; color: #A0522D; font-weight: 600; text-align: center; margin-top: 24px; margin-bottom: 8px; }
+    .drawer-btn-discard-solo { background: white; border: 1px solid #E8E8E8; color: #A0522D; font-size: 14px; font-weight: 500; padding: 12px; border-radius: 8px; width: 100%; text-align: center; cursor: pointer; font-family: inherit; margin-top: 20px; }
     .drawer-btn-discard-solo:hover { background: #FEF2F2; }
 
     /* ── SCREEN 3 — EMAIL PREVIEW ── */
@@ -253,7 +255,7 @@
     .param-desc { font-size: 13px; color: #000; line-height: 1.5; margin-bottom: 20px; }
     .mode-row { display: flex; gap: 12px; }
     .mode-btn { flex: 1; border: 1.5px solid #e8e8e8; border-radius: 8px; padding: 16px 20px; background: #fff; cursor: pointer; text-align: left; font-family: inherit; transition: border-color 0.15s, background 0.15s; }
-    .mode-btn.selected { border: 2px solid #0077B6; background: #EFF6FF; }
+    .mode-btn.selected { border: 2px solid #4A6FA5; background: #EEF2F8; }
     .mode-btn-name { font-size: 14px; font-weight: 600; color: #000; }
     .mode-btn-desc { font-size: 12px; color: #000; margin-top: 4px; line-height: 1.4; }
 
@@ -265,16 +267,16 @@
       background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23888' d='M5 6L0 0h10z'/%3E%3C/svg%3E") no-repeat right 12px center;
       -webkit-appearance: none; appearance: none; cursor: pointer;
     }
-    .seg-select:focus { outline: none; border-color: #0077B6; }
+    .seg-select:focus { outline: none; border-color: #4A6FA5; }
 
     .expiry-block { margin: 20px 0 12px; }
     .expiry-block-title { font-size: 13px; font-weight: 500; color: #000; margin-bottom: 4px; }
     .expiry-block-desc { font-size: 13px; color: #000; line-height: 1.5; }
     .expiry-row { display: flex; gap: 12px; }
     .expiry-btn { flex: 1; border: 1.5px solid #e8e8e8; border-radius: 8px; padding: 12px 16px; background: #fff; cursor: pointer; text-align: center; font-family: inherit; font-size: 14px; font-weight: 600; color: #000; transition: border-color 0.15s, background 0.15s; }
-    .expiry-btn.selected { border: 2px solid #0077B6; background: #EFF6FF; }
+    .expiry-btn.selected { border: 2px solid #4A6FA5; background: #EEF2F8; }
     .save-row { display: flex; justify-content: flex-end; align-items: center; gap: 16px; margin-top: 24px; }
-    .save-confirm { font-size: 13px; color: #0077B6; opacity: 0; transition: opacity 0.25s ease; }
+    .save-confirm { font-size: 13px; color: #4A6FA5; opacity: 0; transition: opacity 0.25s ease; }
     .save-confirm.visible { opacity: 1; }
 
     /* ── SCREEN 5 — SENT LOG ── */
@@ -288,8 +290,10 @@
     .log-table tbody tr:last-child td { border-bottom: none; }
     .lt-recipient { font-weight: 600; }
     .lt-detail { font-weight: 400; }
-    .lt-pill-sent { display: inline-block; background: #F0FDF4; color: #16A34A; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
-    .lt-pill-rejected { display: inline-block; background: #FEF2F2; color: #DC2626; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+    .lt-pill-sent { display: inline-block; background: #EBF3ED; color: #4A7C59; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+    .lt-pill-auto-sent { display: inline-block; background: #EEF2F8; color: #4A6FA5; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+    .lt-pill-rejected { display: inline-block; background: #F5EBE8; color: #A0522D; font-size: 11px; font-weight: 600; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+    .lt-pill-trigger { display: inline-block; background: #F3F4F6; color: #000; font-size: 13px; font-weight: 500; border-radius: 6px; padding: 4px 12px; white-space: nowrap; }
   </style>
 </head>
 <body>
@@ -502,8 +506,8 @@
           <thead>
             <tr>
               <th>Recipient</th>
-              <th>Subject</th>
               <th>Trigger</th>
+              <th>Subject</th>
               <th>Confidence</th>
               <th>Status / Deadline</th>
             </tr>
@@ -511,31 +515,66 @@
           <tbody>
             <tr onclick="openDrawer('priya')">
               <td class="qt-recipient">Priya Sharma</td>
-              <td class="qt-subject">Your renewal is in 14 days. Time to lock in before your window closes</td>
               <td><span class="qt-pill">Renewal 14 days</span></td>
+              <td class="qt-subject">Your renewal is in 14 days. Time to lock in before your window closes</td>
               <td><span class="qt-conf-low">Low</span></td>
-              <td class="qt-held">Held for review</td>
+              <td><span class="qt-held">Held for review</span></td>
+            </tr>
+            <tr class="qt-no-hover">
+              <td class="qt-recipient">Fatima Al-Hassan</td>
+              <td><span class="qt-pill">Rate drop 0.20%</span></td>
+              <td class="qt-subject">Fixed rates dropped again. Your September window looks better</td>
+              <td><span class="qt-conf-low">Low</span></td>
+              <td><span class="qt-held">Held for review</span></td>
             </tr>
             <tr onclick="openDrawer('tianne')">
               <td class="qt-recipient">Tianne Nadyku</td>
-              <td class="qt-subject">Rates dropped this week. Your renewal window is opening up</td>
               <td><span class="qt-pill">Rate drop 0.15%</span></td>
+              <td class="qt-subject">Rates dropped this week. Your renewal window is opening up</td>
               <td><span class="qt-conf-low">Low</span></td>
-              <td class="qt-held">Held for review</td>
+              <td><span class="qt-held">Held for review</span></td>
             </tr>
             <tr onclick="openDrawer('artem')">
               <td class="qt-recipient">Artem Sheika</td>
-              <td class="qt-subject">The Bank of Canada held today. Here is what it means for your September renewal</td>
               <td><span class="qt-pill">BoC Rate Hold</span></td>
+              <td class="qt-subject">The Bank of Canada held today. Here is what it means for your September renewal</td>
               <td><span class="qt-conf-medium">Medium</span></td>
               <td class="qt-expiry" style="color:#000">18h 42m</td>
             </tr>
+            <tr class="qt-no-hover">
+              <td class="qt-recipient">Sarah Okonkwo</td>
+              <td><span class="qt-pill">Variable rate change</span></td>
+              <td class="qt-subject">Your variable rate just shifted. Here is what it means</td>
+              <td><span class="qt-conf-medium">Medium</span></td>
+              <td class="qt-expiry" style="color:#000">16h 30m</td>
+            </tr>
+            <tr class="qt-no-hover">
+              <td class="qt-recipient">Mei-Ling Tran</td>
+              <td><span class="qt-pill">Renewal 45 days</span></td>
+              <td class="qt-subject">Your renewal window opens in 45 days</td>
+              <td><span class="qt-conf-medium">Medium</span></td>
+              <td class="qt-expiry" style="color:#000">22h 00m</td>
+            </tr>
+            <tr class="qt-no-hover">
+              <td class="qt-recipient">James Whitfield</td>
+              <td><span class="qt-pill">BoC Rate Hold</span></td>
+              <td class="qt-subject">BoC held again. What this means for your October renewal</td>
+              <td><span class="qt-conf-high">High</span></td>
+              <td class="qt-expiry" style="color:#4A7C59">9h 10m</td>
+            </tr>
             <tr onclick="openDrawer('marcus')">
               <td class="qt-recipient">Marcus Chen</td>
-              <td class="qt-subject">30 days to your renewal. Here is what today's best rate looks like</td>
               <td><span class="qt-pill">Renewal 30 days</span></td>
+              <td class="qt-subject">30 days to your renewal. Here is what today's best rate looks like</td>
               <td><span class="qt-conf-high">High</span></td>
-              <td class="qt-expiry" style="color:#16A34A">11h 55m</td>
+              <td class="qt-expiry" style="color:#4A7C59">11h 55m</td>
+            </tr>
+            <tr class="qt-no-hover">
+              <td class="qt-recipient">David Liang</td>
+              <td><span class="qt-pill">Renewal 60 days</span></td>
+              <td class="qt-subject">Renewal in 60 days. Lenders are already moving</td>
+              <td><span class="qt-conf-high">High</span></td>
+              <td class="qt-expiry" style="color:#4A7C59">20h 15m</td>
             </tr>
           </tbody>
         </table>
@@ -761,35 +800,35 @@ The Ratehub Team</div>
           <tbody>
             <tr>
               <td class="lt-recipient">Artem Sheika</td>
-              <td class="lt-detail">BoC Rate Hold</td>
+              <td class="lt-detail"><span class="lt-pill-trigger">BoC Rate Hold</span></td>
               <td class="lt-detail">May 3, 2026 9:43am</td>
               <td class="lt-detail">Sarah M.</td>
               <td><span class="lt-pill-sent">Sent</span></td>
             </tr>
             <tr>
               <td class="lt-recipient">Tianne Nadyku</td>
-              <td class="lt-detail">BoC Rate Hold</td>
+              <td class="lt-detail"><span class="lt-pill-trigger">BoC Rate Hold</span></td>
               <td class="lt-detail">May 3, 2026 9:51am</td>
               <td class="lt-detail">Sarah M.</td>
               <td><span class="lt-pill-sent">Sent</span></td>
             </tr>
             <tr>
               <td class="lt-recipient">Marcus Chen</td>
-              <td class="lt-detail">Rate drop 0.15%</td>
+              <td class="lt-detail"><span class="lt-pill-trigger">Rate drop 0.15%</span></td>
               <td class="lt-detail">Apr 28, 2026 10:12am</td>
               <td class="lt-detail">David K.</td>
               <td><span class="lt-pill-sent">Sent</span></td>
             </tr>
             <tr>
               <td class="lt-recipient">Priya Sharma</td>
-              <td class="lt-detail">Renewal 30 days</td>
+              <td class="lt-detail"><span class="lt-pill-trigger">Renewal 30 days</span></td>
               <td class="lt-detail">Apr 25, 2026 2:03pm</td>
               <td class="lt-detail">Sarah M.</td>
               <td><span class="lt-pill-sent">Sent</span></td>
             </tr>
             <tr>
               <td class="lt-recipient">James Wu</td>
-              <td class="lt-detail">BoC Rate Cut</td>
+              <td class="lt-detail"><span class="lt-pill-trigger">BoC Rate Cut</span></td>
               <td class="lt-detail">Apr 16, 2026 11:20am</td>
               <td class="lt-detail">David K.</td>
               <td><span class="lt-pill-rejected">Rejected</span></td>
@@ -929,7 +968,8 @@ The Ratehub Team</div>
       document.getElementById('drawer-body').textContent = d.body;
       document.getElementById('drawer-expiry-text').textContent = d.expiry;
       document.getElementById('drawer-agents').innerHTML = d.agents.map(function(a, i) {
-        return '<div class="drawer-agent-row"><span class="drawer-agent-left">Agent ' + (i + 1) + ': ' + a[0] + '</span><span class="drawer-agent-right">' + a[1] + '</span></div>';
+        var valStyle = a[1] === 'Passed all checks ✓' ? ' style="color:#4A7C59;font-weight:600"' : '';
+        return '<div class="drawer-agent-row"><span class="drawer-agent-left">Agent ' + (i + 1) + ': ' + a[0] + '</span><span class="drawer-agent-right"' + valStyle + '>' + a[1] + '</span></div>';
       }).join('');
       var boxClass = d.confidence === 'low' ? 'drawer-expiry-box-low' : d.confidence === 'high' ? 'drawer-expiry-box-high' : 'drawer-expiry-box';
       document.getElementById('drawer-expiry-box').className = boxClass;
